@@ -9,7 +9,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -39,7 +38,7 @@ class BasketTest {
     public void halfPriceDiscount() {
         // Longhand to be explicit about how a discounter is set up
         final Discounter discounter = new Discounter();
-        Product theProduct = new Product(new BigDecimal("0.99"));
+        Product theProduct = new Product("TinOfCustard", new BigDecimal("0.99"));
         discounter.withOffer(theProduct, new PercentOff(theProduct, 0.5));
 
         Basket basket = new Basket(discounter);
@@ -71,11 +70,11 @@ class BasketTest {
     }
 
     private static Item aPintOfMilk() {
-        return new Product(new BigDecimal("0.49")).oneOf();
+        return new Product("Milk", new BigDecimal("0.49")).oneOf();
     }
 
     private static Item aPackOfDigestives() {
-        return new Product(new BigDecimal("1.55")).oneOf();
+        return new Product("Digestives", new BigDecimal("1.55")).oneOf();
     }
 
     private static WeighedProduct aKiloOfAmericanSweets() {
