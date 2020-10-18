@@ -8,13 +8,16 @@ import java.util.List;
 
 public class Basket {
     private final List<Item> items;
+    private final Discounter discounter;
 
-    public Basket() {
+    public Basket(Discounter discounter) {
+        this.discounter = discounter;
         this.items = new ArrayList<>();
     }
 
     public void add(final Item item) {
         this.items.add(item);
+        discounter.addItem(item);
     }
 
     List<Item> items() {
@@ -47,7 +50,7 @@ public class Basket {
          *  which provides that functionality.
          */
         private BigDecimal discounts() {
-            return BigDecimal.ZERO;
+            return discounter.calculate();
         }
 
         private BigDecimal calculate() {

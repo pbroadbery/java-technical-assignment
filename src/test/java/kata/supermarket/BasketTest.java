@@ -1,6 +1,7 @@
 package kata.supermarket;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -8,17 +9,18 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class BasketTest {
-
     @DisplayName("basket provides its total value when containing...")
     @MethodSource
     @ParameterizedTest(name = "{0}")
     void basketProvidesTotalValue(String description, String expectedTotal, Iterable<Item> items) {
-        final Basket basket = new Basket();
+        final Discounter discounter = new Discounter();
+        final Basket basket = new Basket(discounter);
         items.forEach(basket::add);
         assertEquals(new BigDecimal(expectedTotal), basket.total());
     }
@@ -31,6 +33,18 @@ class BasketTest {
                 aSingleItemPricedByWeight(),
                 multipleItemsPricedByWeight()
         );
+    }
+
+    @Test
+    public void halfPriceDiscount() {
+        // Longhand to be explicit about how a discounter is set up
+        final Discounter discounter = new Discounter();
+        Product theProduct = new Product(new BigDecimal("0.99"));
+        discounter.withOffer(theProduct, new PercentOff(theProduct, 0.5));
+
+        Basket basket = new Basket(discounter);
+        basket.add(theProduct.oneOf());
+        assertEquals(new BigDecimal("0.49"), basket.total());
     }
 
     private static Arguments aSingleItemPricedByWeight() {
