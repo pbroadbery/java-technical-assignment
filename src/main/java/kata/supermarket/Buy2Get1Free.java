@@ -14,12 +14,13 @@ public class Buy2Get1Free implements Offer {
     }
 
     @Override
-    public Discount discount(Product product) {
-        return new Discount(this);
+    public Discount discount(AbstractProduct product) {
+        return new Discount.ItemDiscount(this);
     }
 
     @Override
-    public BigDecimal calculate(int nItems) {
+    public BigDecimal calculate(Object state) {
+        int nItems = (Integer) state;
         int nInstances = nItems/3;
         return product.pricePerUnit().multiply(BigDecimal.valueOf(nInstances));
     }

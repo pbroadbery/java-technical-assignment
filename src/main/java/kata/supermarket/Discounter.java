@@ -6,10 +6,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Discounter {
-    Map<Product, Offer> offerForProduct = new HashMap<>();
-    Map<Product, Discount> discountForProduct = new HashMap<>();
+    Map<AbstractProduct, Offer> offerForProduct = new HashMap<>();
+    Map<AbstractProduct, Discount> discountForProduct = new HashMap<>();
 
-    public void withOffer(Product product, Offer offer) {
+    public void withOffer(AbstractProduct product, Offer offer) {
         if (offerForProduct.containsKey(product)) {
             throw new IllegalArgumentException("Added 2 offers for the same product");
         }
@@ -25,6 +25,20 @@ public class Discounter {
     }
 
     void addItem(ItemByWeight item) {
+        final Discount discount;
+        if (discountForProduct.containsKey(item.product())) {
+            discount = discountForProduct.get(item.product());
+        }
+        else if (offerForProduct.containsKey(item.product())) {
+            discount = offerForProduct.get(item.product()).discount(item.product());
+            discountForProduct.put(item.product(), discount);
+        }
+        else {
+            discount = null;
+        }
+        if (discount != null) {
+            discount.addItem(item);
+        }
     }
 
     void addItem(ItemByUnit item) {
@@ -40,7 +54,7 @@ public class Discounter {
             discount = null;
         }
         if (discount != null) {
-            discount.addItem();
+            discount.addItem(item);
         }
     }
 

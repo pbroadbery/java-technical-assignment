@@ -3,7 +3,7 @@ package kata.supermarket;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-public class Product {
+public class Product implements AbstractProduct {
     private final String id;
     private final BigDecimal pricePerUnit;
 

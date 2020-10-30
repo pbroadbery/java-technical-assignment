@@ -53,13 +53,16 @@ public class DiscountedBasketTest {
 
     static Stream<Arguments> basketProvidesTotalValue_B2G1F() {
         Product bread_L1 = bread_L1();
-        List<Item> breadItems = IntStream.range(0, 5).mapToObj(n -> bread_L1.oneOf()).collect(Collectors.toList());
+        List<Item> breadItems = IntStream.range(0, 10).mapToObj(n -> bread_L1.oneOf()).collect(Collectors.toList());
         return Stream.of(
                 Arguments.arguments("nothing", "0.00", bread_L1, Collections.emptyList()),
                 Arguments.arguments("one", "1.00", bread_L1, Collections.singleton(bread_L1.oneOf())),
                 Arguments.arguments("two", "2.00", bread_L1, breadItems.subList(0, 2)),
                 Arguments.arguments("three", "2.00", bread_L1, breadItems.subList(0, 3)),
-                Arguments.arguments("four", "3.00", bread_L1, breadItems.subList(0, 4)));
+                Arguments.arguments("four", "3.00", bread_L1, breadItems.subList(0, 4)),
+                Arguments.arguments("five", "4.00", bread_L1, breadItems.subList(0, 5)),
+                Arguments.arguments("six", "4.00", bread_L1, breadItems.subList(0, 6)),
+                Arguments.arguments("seven", "5.00", bread_L1, breadItems.subList(0, 7)));
     }
 
     static Product bottleOfMilk_99p() {

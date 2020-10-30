@@ -13,12 +13,13 @@ public class PercentOff implements Offer {
     }
 
     @Override
-    public Discount discount(Product product) {
-        return new Discount(this);
+    public Discount discount(AbstractProduct product) {
+        return new Discount.ItemDiscount(this);
     }
 
     @Override
-    public BigDecimal calculate(int nItems) {
+    public BigDecimal calculate(Object state) {
+        int nItems = (Integer) state;
         BigDecimal discount = product.pricePerUnit()
                 .multiply(reduction)
                 .setScale(2, RoundingMode.HALF_UP);

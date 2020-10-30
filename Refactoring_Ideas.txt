@@ -1,0 +1,32 @@
+
+
+* Weighted products & Discounts.
+
+- Discount becomes an abstract class
+- Add WeightedOffer & new Mapping in Discounter.... actually, break discounter up so there's a 'DiscountProducer'..
+
+(weighted offer can be very simple - it's always a reduction on a quantity, with no discretion).
+- Unless a supermarket wants a 'buy more than 2 tonnes of potatoes and get a free carrot'..
+
+* Product class "Half price on all biscuits"
+
+Product store needs a 'give me offers for this product', which can then wander through its data model and
+find relevant offers by {manufacturer, type, ... }
+
+* Buy 3, cheapest is free.
+
+Need to bucket & count products within a new Discount class.  Calculation is painful if class is large and shopper
+is buying a large number.
+
+* Meal deals
+
+Pretty much see above, similar rules. Question is whether to be greedy or optimise in store's favour.
+
+* Sporadic discounts for near sell by items
+
+Item has a "*" attached to it to indicate that it is already discounted, and so product
+specific offers are not applied.  Meal deal still applies. (I've experimented with this...).
+
+
+
+

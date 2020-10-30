@@ -2,19 +2,51 @@ package kata.supermarket;
 
 import java.math.BigDecimal;
 
-public class Discount {
-    private final Offer offer;
-    private int nItems;
+public abstract class Discount {
+    protected final Offer offer;
 
-    public Discount(Offer offer) {
+    protected Discount(Offer offer) {
         this.offer = offer;
     }
 
-    void addItem() {
-        nItems++;
+
+    abstract BigDecimal calculate();
+
+    abstract void addItem(Item item);
+
+    static class ItemDiscount extends Discount {
+        int nItems;
+
+        public ItemDiscount(Offer offer) {
+            super(offer);
+        }
+
+        @Override
+        void addItem(Item item) {
+            nItems += 1;
+        }
+
+        @Override
+        BigDecimal calculate() {
+            return offer.calculate(nItems);
+        }
     }
 
-    BigDecimal calculate() {
-        return offer.calculate(nItems);
+    static class WeightedDiscount extends Discount {
+        protected BigDecimal weight = BigDecimal.ZERO;
+
+        public WeightedDiscount(Offer offer) {
+            super(offer);
+        }
+
+        @Override
+        BigDecimal calculate() {
+            return offer.calculate(weight);
+        }
+
+        @Override
+        void addItem(Item item) {
+            weight = weight.add(((ItemByWeight) item).weightInKilos());
+        }
     }
 }
